@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Malam yang Tak Ingin Kulupa</title>
+<style>
+:root{--night:#0f1a1f;--deep:#17262c;--bulb:#f2b866;--rose:#e2949a;--oat:#eadfcf;color-scheme:dark;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(120% 80% at 50% 0%,var(--deep),var(--night) 70%);color:var(--oat);font-family:"Karla",system-ui,sans-serif;overflow-x:hidden}
+.lights{position:relative;height:90px;margin-top:6px}
+.lights svg{position:absolute;inset:0;width:100%;height:100%}
+.bulb{position:absolute;width:14px;height:20px;border-radius:50% 50% 55% 55%;background:var(--bulb);box-shadow:0 0 14px 5px rgba(242,184,102,.55),0 0 40px 12px rgba(242,184,102,.2);animation:glow 3.2s ease-in-out infinite}
+@keyframes glow{50%{opacity:.55;box-shadow:0 0 8px 2px rgba(242,184,102,.35)}}
+main{max-width:520px;margin:0 auto;padding:0 22px 70px;text-align:center}
+h1{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;font-style:italic;font-size:clamp(2.3rem,9vw,3.4rem);line-height:1.1;margin:10px 0 6px;color:#fff4e2}
+.sub{margin:0 0 30px;opacity:.75;font-size:1rem}
+.frame{position:relative;display:inline-block;background:var(--oat);padding:12px 12px 52px;border-radius:4px;transform:rotate(-2.2deg);box-shadow:0 30px 60px rgba(0,0,0,.55),0 0 80px rgba(242,184,102,.15);cursor:pointer;border:0;transition:transform .5s}
+.frame:hover,.frame:focus-visible{transform:rotate(0) scale(1.02);outline:2px solid var(--bulb);outline-offset:6px}
+.frame img{display:block;width:min(78vw,340px);height:auto;border-radius:2px}
+.frame span{position:absolute;left:0;right:0;bottom:14px;font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;font-size:1.35rem;color:#3b2f2f}
+.hint{margin:26px 0 40px;font-size:.92rem;opacity:.65}
+.poem{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.45rem;line-height:1.75;color:var(--oat);margin:0 auto 40px;max-width:30ch}
+.poem p{margin:0 0 1.1em}
+.btn{font:inherit;font-size:1rem;color:#2a1b1d;background:var(--rose);border:0;border-radius:999px;padding:14px 28px;cursor:pointer;transition:transform .2s,background .2s}
+.btn:hover{background:#f0aeb3;transform:translateY(-2px)}
+.btn:focus-visible{outline:2px solid var(--bulb);outline-offset:4px}
+.letter{max-height:0;opacity:0;overflow:hidden;transition:max-height .9s ease,opacity .9s ease,margin .6s;margin-top:0}
+.letter.open{max-height:700px;opacity:1;margin-top:34px}
+.letter div{background:rgba(234,223,207,.07);border:1px solid rgba(242,184,102,.35);border-radius:14px;padding:26px 24px;font-family:"Cormorant Garamond",Georgia,serif;font-size:1.3rem;line-height:1.7;text-align:left}
+.letter b{display:block;text-align:right;font-style:italic;font-weight:500;color:var(--bulb);margin-top:10px}
+.heart{position:fixed;pointer-events:none;font-size:22px;color:var(--rose);animation:up 2.6s ease-out forwards;z-index:9}
+@keyframes up{to{transform:translate(var(--dx),-70vh) scale(1.6);opacity:0}}
+@media (prefers-reduced-motion:reduce){.bulb,.heart{animation:none}.frame,.letter{transition:none}}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Karla:wght@400;500&display=swap">
+</head>
+<body>
+<div class="lights" id="lights" aria-hidden="true">
+  <svg viewBox="0 0 400 90" preserveAspectRatio="none"><path d="M-10 8 Q100 70 200 22 T410 10" fill="none" stroke="#3a4a50" stroke-width="2"/></svg>
+</div>
+<main>
+  <h1>Malam yang tak ingin kulupa</h1>
+  <p class="sub">Di bawah lampu temaram, kamu tampak paling tenang.</p>
+
+  <button class="frame" id="photo" aria-label="Sentuh foto untuk melepas hati">
+    <img src="foto.jpg" alt="Potret seorang perempuan berhijab krem duduk di kursi kafe pada malam hari, dengan lampu-lampu hangat di belakangnya">
+    <span>satu malam, selamanya</span>
+  </button>
+  <p class="hint">Sentuh foto itu, biar hatinya terbang.</p>
+
+  <div class="poem">
+    <p>Lampu-lampu itu menyala,<br>tapi yang paling hangat<br>tetap tatapanmu.</p>
+    <p>Kopi boleh dingin,<br>malam boleh larut,<br>aku tetap ingin di sini.</p>
+  </div>
+
+  <button class="btn" id="open">Buka suratnya</button>
+  <section class="letter" id="letter" aria-live="polite">
+    <div>
+      Terima kasih sudah ada. Di antara riuh dunia, kamu adalah jeda yang paling kusuka: tenang, hangat, dan membuat semuanya terasa cukup.
+      <b>Dari hati yang selalu pulang padamu</b>
+    </div>
+  </section>
+</main>
+<script>
+(function(){
+  var box=document.getElementById('lights'),n=9;
+  for(var i=0;i<n;i++){
+    var t=(i+.5)/n,x=t*100,y=14+Math.sin(t*Math.PI)*38;
+    var b=document.createElement('i');b.className='bulb';
+    b.style.left='calc('+x+'% - 7px)';b.style.top=y+'px';b.style.animationDelay=(i*.37)+'s';
+    box.appendChild(b);
+  }
+  function hearts(cx,cy){
+    for(var k=0;k<14;k++){
+      var h=document.createElement('div');h.className='heart';h.textContent='♥';
+      h.style.left=(cx+(Math.random()*60-30))+'px';h.style.top=(cy+(Math.random()*30))+'px';
+      h.style.setProperty('--dx',(Math.random()*160-80)+'px');
+      h.style.animationDelay=(Math.random()*.5)+'s';
+      h.style.fontSize=(16+Math.random()*20)+'px';
+      document.body.appendChild(h);
+      setTimeout(function(e){e.remove()},3400,h);
+    }
+  }
+  document.getElementById('photo').addEventListener('click',function(e){
+    var r=e.currentTarget.getBoundingClientRect();
+    hearts(e.clientX||r.left+r.width/2,e.clientY||r.top+r.height/2);
+  });
+  var btn=document.getElementById('open'),l=document.getElementById('letter');
+  btn.addEventListener('click',function(){
+    var o=l.classList.toggle('open');
+    btn.textContent=o?'Tutup suratnya':'Buka suratnya';
+    if(o){setTimeout(function(){l.scrollIntoView({behavior:'smooth',block:'center'})},300)}
+  });
+})();
+</script>
+</body>
+</html>
